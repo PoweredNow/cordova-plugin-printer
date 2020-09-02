@@ -63,7 +63,7 @@ public final class Printer extends CordovaPlugin
 
         if (action.equalsIgnoreCase("check"))
         {
-            check(args.optString(0), callback);
+            check(args.optString(0), args.optJSONObject(1), callback);
         }
         else if (action.equalsIgnoreCase("types"))
         {
@@ -86,11 +86,11 @@ public final class Printer extends CordovaPlugin
      * @param item     Any kind of URL like file://, file:///, res:// or base64://
      * @param callback The plugin function to invoke with the result.
      */
-    private void check (@Nullable String item, CallbackContext callback)
+    private void check (@Nullable String item, @NonNull JSONObject settings, CallbackContext callback)
     {
         cordova.getThreadPool().execute(() -> {
             PrintManager pm   = new PrintManager(cordova.getContext());
-            boolean printable = pm.canPrintItem(item);
+            boolean printable = pm.canPrintItem(item, settings);
 
             sendPluginResult(callback, printable);
         });

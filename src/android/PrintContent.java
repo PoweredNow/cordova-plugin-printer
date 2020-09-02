@@ -61,9 +61,10 @@ class PrintContent
      */
     @NonNull
     static ContentType getContentType (@Nullable String path,
-                                       @NonNull Context context)
+                                       @NonNull Context context,
+                                       @NonNull JSONObject settings)
     {
-        return new PrintContent(context).getContentType(path);
+        return new PrintContent(context).getContentType(path, settings);
     }
 
     /**
@@ -74,9 +75,10 @@ class PrintContent
      * @return The content type even the file does not exist.
      */
     @NonNull
-    private ContentType getContentType (@Nullable String path)
+    private ContentType getContentType (@Nullable String path, @NonNull JSONObject settings)
     {
         ContentType type = ContentType.PLAIN;
+        @Nullable String forcedMimeType = settings.optString("mimeType", null);
 
         if (path == null || path.isEmpty() || path.charAt(0) == '<')
         {
@@ -101,7 +103,11 @@ class PrintContent
             {
                 mime = URLConnection.guessContentTypeFromName(path);
             }
-
+	    
+	    if (forcedMimeType !=  null) {
+                mime = forcedMimeType;
+            }
+            
             switch (mime)
             {
                 case "image/bmp":

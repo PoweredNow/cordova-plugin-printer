@@ -73,13 +73,13 @@ class PrintManager
      *
      * @return true if its able to render the content of the file.
      */
-    boolean canPrintItem (@Nullable String item)
+    boolean canPrintItem (@Nullable String item, @NonNull JSONObject settings)
     {
         boolean supported = PrintHelper.systemSupportsPrint();
 
         if (item != null)
         {
-            supported = PrintContent.getContentType(item, context) != UNSUPPORTED;
+            supported = PrintContent.getContentType(item, context, settings) != UNSUPPORTED;
         }
 
         return supported;
@@ -117,7 +117,7 @@ class PrintManager
     void print (@Nullable String content, @NonNull JSONObject settings,
                 @NonNull WebView view, @NonNull OnPrintFinishCallback callback)
     {
-        switch (PrintContent.getContentType(content, context))
+        switch (PrintContent.getContentType(content, context, settings))
         {
             case IMAGE:
                 printImage(content, settings, callback);
