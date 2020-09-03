@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 
+import org.json.JSONObject;
 /**
  * Knows how to convert a resource URL into an io stream.
  */
